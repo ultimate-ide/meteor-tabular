@@ -84,6 +84,6 @@ tableInit = function tableInit(tabularTable, template) {
   });
 
   template.tabular.columns = columns;
-  template.tabular.fields = fields;
-  template.tabular.searchFields = searchFields;
+  template.tabular.fields = _.extend(fields, tabularTable.extraFields);
+  template.tabular.searchFields = _.extend(searchFields, tabularTable.extraFields);
 };
