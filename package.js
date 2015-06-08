@@ -3,7 +3,7 @@
 Package.describe({
   name: 'ultimateide:tabular',
   summary: 'Datatables for large or small datasets in Meteor',
-  version: '1.2.0',
+  version: '1.2.1',
   git: 'https://github.com/ultimate-ide/meteor-tabular.git'
 });
 
