@@ -30,6 +30,9 @@ Template.tabular.rendered = function () {
   template.tabular.ready = new ReactiveVar(false);
   template.tabular.recordsTotal = 0;
   template.tabular.recordsFiltered = 0;
+  
+  var parentTemplate = template.parentTemplate(1);
+  parentTemplate.datatableSubscriptionReady = new ReactiveVar(false);
 
   // These are some DataTables options that we need for everything to work.
   // We add them to the options specified by the user.
@@ -189,19 +192,25 @@ Template.tabular.rendered = function () {
     var docPub = template.tabular.docPub.get();
     
     if(_.isString(docPub)) {
-      template.tabular.tableDef.sub.subscribe(
+      template.tabular.subscription = template.tabular.tableDef.sub.subscribe(
         docPub,
         tableName,
         tableInfo.ids || [],
-        template.tabular.fields
+        template.tabular.fields,
+        function() {
+          parentTemplate.datatableSubscriptionReady.set(true);
+        }
       );
     }
     else if(_.isFunction(docPub)) {
-      docPub(
+      template.tabular.subscription = docPub(
         template.tabular.tableDef.sub,
         tableName,
         tableInfo.ids || [],
-        template.tabular.fields
+        template.tabular.fields, 
+        function() {
+          parentTemplate.datatableSubscriptionReady.set(true);
+        }
       );
     }
 
