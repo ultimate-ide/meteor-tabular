@@ -31,7 +31,8 @@ Tabular.Table = function (options) {
   self.allow = options.allow;
   self.allowFields = options.allowFields;
   self.changeSelector = options.changeSelector;
-
+	self.observeUser = options.observeUser;
+	
   if (_.isArray(options.extraFields)) {
     var fields = {};
     _.each(options.extraFields, function (fieldName) {

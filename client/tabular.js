@@ -4,7 +4,7 @@ Template.tabular.helpers({
   atts: function () {
     // We remove the "table" and "selector" attributes and assume the rest belong
     // on the <table> element
-    return _.omit(this, "table", "selector");
+    return _.omit(this, "table", "selector", "limit");
   }
 });
 
@@ -52,7 +52,16 @@ Template.tabular.rendered = function () {
       template.tabular.skip.set(data.start);
       Session.set('Tabular.LastSkip', data.start);
       // Update limit
-      template.tabular.limit.set(data.length);
+			
+			var currentDataLimit;
+			
+			//cant call Template.currentData().limit when clicking sorters
+			try {
+				currentDataLimit = Template.currentData().limit;
+			}
+			catch (e) {}
+			
+      template.tabular.limit.set(currentDataLimit || data.length);
       // Update sort
       template.tabular.sort.set(Util.getMongoSort(data.order, template.tabular.columns));
       // Update pubSelector
@@ -152,8 +161,6 @@ Template.tabular.rendered = function () {
     if (!template.tabular.ready.get()) {
       return;
     }
-
-    //console.log('tabular_getInfo autorun');
 
     Meteor.subscribe(
       "tabular_getInfo",
@@ -284,6 +291,8 @@ Template.tabular.rendered = function () {
     // on the server.
     var findOptions = {};
     var fields = template.tabular.fields;
+		
+		/** //LET ULTIMATE SUBSCRIPTION HANDLE FIELDS -james gillmore (Ultimate MVC Team)
     if (fields) {
       // Extend with extraFields from table definition
       if (typeof template.tabular.tableDef.extraFields === 'object') {
@@ -291,6 +300,9 @@ Template.tabular.rendered = function () {
       }
       findOptions.fields = fields;
     }
+		**/
+		
+		delete findOptions.fields; //delete it all together -james gillmore
 
     // Sort does not need to be reactive here; using
     // reactive sort would result in extra rerunning.
