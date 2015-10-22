@@ -26,12 +26,14 @@ Package.onUse(function(api) {
     'client/tableRecords.js',
     'client/tableInit.js',
     'client/pubSelector.js',
-    'client/tabular.js',
-    // images
+    'client/tabular.js'
+  ], 'client');
+	
+	api.addAssets([
     'images/sort_asc.png',
     'images/sort_asc_disabled.png',
     'images/sort_both.png',
     'images/sort_desc.png',
     'images/sort_desc_disabled.png'
-  ], 'client');
+	], 'client')
 });
